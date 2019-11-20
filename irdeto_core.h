@@ -52,7 +52,7 @@ char k0002[8],k0004[8],k0006[8],k0008[8],k000a[8],k000c[8],k000e[8],k0010[8];
 char k1002[8],k1004[8],k1006[8],k1008[8],k100a[8],k100c[8],k100e[8],k1010[8];
 char k2002[8],k2004[8],k2006[8],k2008[8],k200a[8],k200c[8],k200e[8],k2010[8];
 char k3002[8],k3004[8],k3006[8],k3008[8],k300a[8],k300c[8],k300e[8],k3010[8];
-
+//char hmk[10],hexserial[3],provid[3];
 uint8_t datum[2];
 
 
@@ -476,6 +476,219 @@ void generate_ecm(uint8_t *buffernew,uint8_t *chid,uint8_t provider,uint8_t keyn
 	restkey(zpk,buffernew[0x05],buffernew[0x06],datum);
 	encrypt(buffernew,zpk,127,8,0x19);
     for (int i=0;i<=4;i++){ buffernew[0x21+i] = sig[i];}
+}
+
+ /*
+ Activate Card PMK + PID (NEEDS HMK) 0
+ 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c
+ 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+             HX HX HX    LE       PR    PM PM PM PM PM PM PM PM PI PI PI SI SI SI SI SI
+ 82 70 1A C3 11 22 33 00 14 68 0D 00 00 6A 8D D2 BE 33 54 4E BC 11 22 33 25 E6 C8 C5 E3
+ 82 70 1A C3 11 22 33 00 14 68 0D 11 00 6A 8D D2 BE 33 54 4E BC 11 22 33 B6 EA 54 A3 9E
+ 82 70 1A C3 11 22 33 00 14 68 0D 22 00 6A 8D D2 BE 33 54 4E BC 11 22 33 B6 E7 35 FE 30
+ 82 70 1A C3 11 22 33 00 14 68 0D 33 00 6A 8D D2 BE 33 54 4E BC 11 22 33 F9 7B E8 5A 88
+
+ Write PK to Card (NEEDS PMK + DATE) 1
+          PR PI PI PI    LE       DA DA       KI PK PK PK PK PK PK PK PK SI SI SI SI SI
+ 82 70 1A 02 11 22 00 00 14 40 02 1E 95 10 09 02 8B 73 68 63 AB 6A 37 DC 5F 02 D7 FD 15
+ 82 70 1A 0A 11 22 00 00 14 40 02 1E 95 10 09 02 8B 73 68 63 AB 6A 37 DC BD F1 A2 51 71
+ 82 70 1A 12 11 22 00 00 14 40 02 1E 95 10 09 02 8B 73 68 63 AB 6A 37 DC 1B 31 D4 20 BA
+ 82 70 1A 1A 11 22 00 00 14 40 02 1E 95 10 09 02 8B 73 68 63 AB 6A 37 DC 23 83 E0 CC 1F
+
+ Kill all CHIDs (NEEDS PMK + DATE) 2
+
+          PR PI PI PI    LE       DA DA       SI SI SI SI SI
+ 82 70 11 03 11 22 33 00 0B 40 02 1E 95 94 00 7A C4 DE BE 45
+ 82 70 11 0B 11 22 33 00 0B 40 02 1E 95 94 00 BC 09 99 EF 16
+ 82 70 11 13 11 22 33 00 0B 40 02 1E 95 94 00 69 96 83 83 0A
+ 82 70 11 1B 11 22 33 00 0B 40 02 1E 95 94 00 40 A0 49 FD 75
+
+ Write Key + CHID + Start-Date + Valid (NEEDS PMK + DATE) 3
+          PR PI PI PI    LE       DA DA       KI PK PK PK PK PK PK PK PK       CH ID SD SD TI LL SI SI SI SI SI
+ 82 70 22 02 11 22 00 00 1C 40 02 1E 95 10 09 02 61 9E 6A BB 7E 60 BD FA 11 06 75 30 1E 95 FE 01 72 65 C5 D5 09
+ 82 70 22 0A 11 22 00 00 1C 40 02 1E 95 10 09 02 61 9E 6A BB 7E 60 BD FA 11 06 75 30 1E 95 FE 01 FF B3 B8 B2 07
+ 82 70 22 12 11 22 00 00 1C 40 02 1E 95 10 09 02 61 9E 6A BB 7E 60 BD FA 11 06 75 30 1E 95 FE 01 67 73 9B 63 DD
+ 82 70 22 1A 11 22 00 00 1C 40 02 1E 95 10 09 02 61 9E 6A BB 7E 60 BD FA 11 06 75 30 1E 95 FE 01 66 C5 7D 8B A7
+
+ Write CHID + DATE + VALID (NEEDS PMK + DATE) 4
+          PR PI PI PI    LE       DA DA       CH ID SD SD TI LL SI SI SI SI SI
+ 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 82 70 17 0B 11 22 33 00 11 40 02 1E 95 11 06 12 34 1E 95 FE 01 A7 22 4B C5 3F
+
+ Dataset:
+ TY HS HS HS PI PI PI PR HM HM HM HM HM HM HM HM HM HM PM PM PM PM PM PM PM PM KI PK PK PK PK PK PK PK PK CH ID ST RT VA LD
+ TY = Type of EMM
+    0 = Write Masterkey + Provider-ID for Provider (PR) (HEX-Addressed (C3)) NEEDED: HM PM HS PR (00 11 22 33) PI
+    1 = Writes (KI) Plainkey for Provider (PR) (Group-addressed (02 0A 12 1A)) NEEDED: PK PM PR (02 0A 12 1A) KI
+    2 = Kills all ChIDs for Provider (PR) UNIQUE Addressed (03 0B 13 1B) NEEDED: PM PR PI
+    3 = Write Key, CHID + DATE + VALID for Provider (PR) (Group-addressed (02 0A 12 1A)) NEEDED: PK CHID START VALID PM PR PI
+    4 = Write CHID + START + VALID for Provider (PR) UNIQUE Addressed (03 0B 13 1B) NEEDED: PM CHID START VALID PI
+ */
+
+
+void generate_emm(uint8_t *buffer,int type,uint8_t *hexserial,uint8_t *providerid,uint8_t provider,uint8_t *hmk,uint8_t *pmk,int keyident,uint8_t *chid,uint8_t *start,uint8_t *valid){
+uint8_t signature[8] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+uint8_t hexmaster[10];
+uint8_t pk[8];
+
+switch(provider){
+case(0x02):
+    switch(keyident){
+        case(0x02): memcpy(&pk[0],&k0002[0],8); break;
+        case(0x04): memcpy(&pk[0],&k0004[0],8); break;
+        case(0x06): memcpy(&pk[0],&k0006[0],8); break;
+        case(0x08): memcpy(&pk[0],&k0008[0],8); break;
+        case(0x0a): memcpy(&pk[0],&k000a[0],8); break;
+        case(0x0c): memcpy(&pk[0],&k000c[0],8); break;
+        case(0x0e): memcpy(&pk[0],&k000e[0],8); break;
+        case(0x10): memcpy(&pk[0],&k0010[0],8); break;
+    }
+    break;
+case(0x0a):
+    switch(keyident){
+        case(0x02): memcpy(&pk[0],&k1002[0],8); break;
+        case(0x04): memcpy(&pk[0],&k1004[0],8); break;
+        case(0x06): memcpy(&pk[0],&k1006[0],8); break;
+        case(0x08): memcpy(&pk[0],&k1008[0],8); break;
+        case(0x0a): memcpy(&pk[0],&k100a[0],8); break;
+        case(0x0c): memcpy(&pk[0],&k100c[0],8); break;
+        case(0x0e): memcpy(&pk[0],&k100e[0],8); break;
+        case(0x10): memcpy(&pk[0],&k1010[0],8); break;
+    }
+    break;
+case(0x12):
+    switch(keyident){
+        case(0x02): memcpy(&pk[0],&k2002[0],8); break;
+        case(0x04): memcpy(&pk[0],&k2004[0],8); break;
+        case(0x06): memcpy(&pk[0],&k2006[0],8); break;
+        case(0x08): memcpy(&pk[0],&k2008[0],8); break;
+        case(0x0a): memcpy(&pk[0],&k200a[0],8); break;
+        case(0x0c): memcpy(&pk[0],&k200c[0],8); break;
+        case(0x0e): memcpy(&pk[0],&k200e[0],8); break;
+        case(0x10): memcpy(&pk[0],&k2010[0],8); break;
+    }
+    break;
+case(0x1a):
+    switch(keyident){
+        case(0x02): memcpy(&pk[0],&k3002[0],8); break;
+        case(0x04): memcpy(&pk[0],&k3004[0],8); break;
+        case(0x06): memcpy(&pk[0],&k3006[0],8); break;
+        case(0x08): memcpy(&pk[0],&k3008[0],8); break;
+        case(0x0a): memcpy(&pk[0],&k300a[0],8); break;
+        case(0x0c): memcpy(&pk[0],&k300c[0],8); break;
+        case(0x0e): memcpy(&pk[0],&k300e[0],8); break;
+        case(0x10): memcpy(&pk[0],&k3010[0],8); break;
+    }
+    break;
+}
+
+//type 0
+switch(type){
+    case(0x00):
+        memcpy(&hexmaster[0],&hmk[0],10);
+        buffer[2] = 0x1A;
+        buffer[3] = 0xc3;
+        memcpy(&buffer[4],&hexserial[0],3);
+        buffer[8] = 0x14;
+        buffer[9] = 0x68;
+        buffer[10] = 0x0d;
+        buffer[11] = provider;
+        buffer[12] = keyident;
+        memcpy(&buffer[13],&pmk[0],8);
+        memcpy(&buffer[21],&providerid[0],3);
+        sign(signature,buffer,hmk,2);
+        memcpy(&buffer[24],&signature[0],5);
+        encrypt(buffer,hexmaster,127,8,0x0d);
+        break;
+
+    case(0x01):
+        irdeto_datum(datum);
+        for (int i =0 ; i <=9;i++){ hmk[i] = (pmk[i % 8]&0xff);}
+        for (int i=0;i<=1;i++){hmk[8+i] ^= datum[i];}
+        memcpy(&hexmaster[0],&hmk[0],10);
+
+        buffer[2] = 0x1A;
+        buffer[3] = provider;
+        memcpy(&buffer[4],&providerid[0],2);
+        buffer[8] = 0x14;
+        buffer[9] = 0x40;
+        buffer[10] = 0x02;
+        memcpy(&buffer[11],&datum[0],2); //REAL IRDETO DATE LATER ON
+        buffer[13] = 0x10;
+        buffer[14] = 0x09;
+        buffer[15] = keyident;
+        memcpy(&buffer[16],&pk[0],8); //
+        sign(signature,buffer,hmk,2);
+        memcpy(&buffer[24],&signature[0],5);
+        encrypt(buffer,hexmaster,127,8,0x10);
+        break;
+
+    case(0x02):
+        irdeto_datum(datum);
+        for (int i =0 ; i <=9;i++){ hmk[i] = (pmk[i % 8]&0xff);}
+        for (int i=0;i<=1;i++){hmk[8+i] ^= datum[i];}
+        memcpy(&hexmaster[0],&hmk[0],10);
+        buffer[2] = 0x11;
+        buffer[3] = provider;
+        memcpy(&buffer[4],&providerid[0],3);
+        buffer[8] = 0x0b;
+        buffer[9] = 0x40;
+        buffer[10] = 0x02;
+        memcpy(&buffer[11],&datum[0],2); //REAL IRDETO DATE LATER ON
+        buffer[13] = 0x94;
+        buffer[14] = 0x00;
+        sign(signature,buffer,hmk,2);
+        memcpy(&buffer[15],&signature[0],5);
+        break;
+
+    case(0x03):
+        irdeto_datum(datum);
+        for (int i =0 ; i <=9;i++){ hmk[i] = (pmk[i % 8]&0xff);}
+        for (int i=0;i<=1;i++){hmk[8+i] ^= datum[i];}
+        memcpy(&hexmaster[0],&hmk[0],10);
+        buffer[2] = 0x22;
+        buffer[3] = provider;
+        memcpy(&buffer[4],&providerid[0],2);
+        buffer[8] = 0x1c;
+        buffer[9] = 0x40;
+        buffer[10] = 0x02;
+        memcpy(&buffer[11],&datum[0],2); //REAL IRDETO DATE LATER ON
+        buffer[13] = 0x10;
+        buffer[14] = 0x09;
+        buffer[15] = keyident;
+        memcpy(&buffer[16],&pk[0],8); //
+        buffer[24] = 0x11;
+        buffer[25] = 0x06;
+        memcpy(&buffer[26],&chid[0],2);
+        memcpy(&buffer[28],&start[0],2);
+        memcpy(&buffer[30],&valid[0],2);
+        sign(signature,buffer,hmk,2);
+        memcpy(&buffer[32],&signature[0],5);
+        encrypt(buffer,hexmaster,127,8,0x10);
+        break;
+
+    case(0x04):
+        irdeto_datum(datum);
+        for (int i =0 ; i <=9;i++){ hmk[i] = (pmk[i % 8]&0xff);}
+        for (int i=0;i<=1;i++){hmk[8+i] ^= datum[i];}
+        memcpy(&hexmaster[0],&hmk[0],10);
+        buffer[2] = 0x17;
+        buffer[3] = provider;
+        memcpy(&buffer[4],&providerid[0],3);
+        buffer[8] = 0x11;
+        buffer[9] = 0x40;
+        buffer[10] = 0x02;
+        memcpy(&buffer[11],&datum[0],2); //REAL IRDETO DATE LATER ON
+        buffer[13] = 0x11;
+        buffer[14] = 0x06;
+        memcpy(&buffer[15],&chid[0],2);
+        memcpy(&buffer[17],&start[0],2);
+        memcpy(&buffer[19],&valid[0],2);
+        sign(signature,buffer,hmk,2);
+        memcpy(&buffer[21],&signature[0],5);
+        break;
+    }
+
 }
 
 #endif
