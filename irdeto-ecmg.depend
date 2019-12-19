@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1547714802 source:r:\irdeto-ecmg\main.cpp
+1576744225 source:r:\irdeto-ecmg\main.cpp
 	<stdio.h>
 	<winsock2.h>
 	"parser_long.h"
@@ -7,11 +7,13 @@
 1545071274 r:\irdeto-ecmg\parser.h
 	"irdeto_core.h"
 
-1547710254 r:\irdeto-ecmg\irdeto_core.h
+1576745845 r:\irdeto-ecmg\irdeto_core.h
 	<time.h>
+	<stdio.h>
 	<fstream>
+	<cstring>
 
-1547710254 r:\irdeto-ecmg\parser_long.h
+1576745448 r:\irdeto-ecmg\parser_long.h
 	"irdeto_core.h"
 
 1547714802 source:c:\freebasic\basic workspace\freebasic\crypto\irdeto\cpp\irdeto-ecmg\main.cpp
@@ -25,4 +27,10 @@
 1573637576 c:\freebasic\basic workspace\freebasic\crypto\irdeto\cpp\irdeto-ecmg\irdeto_core.h
 	<time.h>
 	<fstream>
+
+1576745806 source:r:\irdeto-ecmg\irdeto_core.cpp
+	"irdeto_core.h"
+
+1576745365 source:r:\irdeto-ecmg\parser_long.cpp
+	"parser_long.h"
 

@@ -32,8 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="irdeto_core.cpp" />
 		<Unit filename="irdeto_core.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="parser_long.cpp" />
 		<Unit filename="parser_long.h" />
 		<Extensions>
 			<code_completion />

@@ -1,5 +1,5 @@
 #!/bin/bash
-g++ -Wall linux_ecmg.cpp -o irdeto-ecmg.x86
+g++ -Wall linux_ecmg.cpp irdeto_core.cpp parser_long.cpp -o irdeto-ecmg.x86
 arm-linux-gnueabi-g++ -Wall linux_ecmg.cpp -o irdeto-ecmg.arm
 arm-linux-gnueabihf-g++ -Wall linux_ecmg.cpp -o irdeto-ecmg.armhf
 sh4-linux-gnu-g++ -Wall linux_ecmg.cpp -o irdeto-ecmg.sh4
