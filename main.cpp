@@ -17,6 +17,14 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int main(int argc , char *argv[])
 {
+    unsigned int port;
+    if(argc != 2){
+        fprintf(stderr,"No Port defined! Exiting...\n");
+        return -1;
+    }
+
+
+    port = atoi(argv[1]);
     readkeys();
 	WSADATA wsa;
 	SOCKET master , new_socket , client_socket[30] , s;
@@ -59,7 +67,7 @@ int main(int argc , char *argv[])
 	//Prepare the sockaddr_in structure
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = INADDR_ANY;
-	server.sin_port = htons( 8888 );
+	server.sin_port = htons( port );
 
 	//Bind
 	if( bind(master ,(struct sockaddr *)&server , sizeof(server)) == SOCKET_ERROR)

@@ -20,17 +20,27 @@ char txbuffer[188];
 
 #define TRUE   1
 #define FALSE  0
-#define PORT 8888
+// #define PORT 8888
 
 int main(int argc , char *argv[])
 {
-readkeys();
+
     int opt = TRUE;
+    unsigned int port;
     int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd;
 	int max_sd;
     struct sockaddr_in address;
 
+    if(argc != 2){
+        fprintf(stderr,"No Port defined! Exiting...\n");
+        return -1;
+    }
+    port = atoi(argv[1]);
     char buffer[1025];  //data buffer of 1K
+
+    readkeys();
+
+    
 
     //set of socket descriptors
     fd_set readfds;
@@ -61,7 +71,7 @@ readkeys();
     //type of socket created
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons( PORT );
+    address.sin_port = htons( port );
 
     //bind the socket to localhost port 8888
     if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0) 
@@ -69,7 +79,7 @@ readkeys();
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
-	printf("Irdeto ECMG on port %d \n", PORT);
+	printf("Irdeto ECMG on port %d \n", port);
 
     //try to specify maximum of 3 pending connections for the master socket
     if (listen(master_socket, 3) < 0)
