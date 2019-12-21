@@ -406,8 +406,7 @@ case 0x00:
 	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k000c[i % 8]&0xff);} break;
 	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k000e[i % 8]&0xff);} break;
 	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0010[i % 8]&0xff);} break;
-
-	}
+    }break;
 case 0x10:
     switch (keynum){
 	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1002[i % 8]&0xff);} break;
@@ -418,8 +417,7 @@ case 0x10:
 	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k100c[i % 8]&0xff);} break;
 	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k100e[i % 8]&0xff);} break;
 	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1010[i % 8]&0xff);} break;
-
-	}
+	}break;
 case 0x20:
     switch (keynum){
 	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2002[i % 8]&0xff);} break;
@@ -430,8 +428,7 @@ case 0x20:
 	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k200c[i % 8]&0xff);} break;
 	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k200e[i % 8]&0xff);} break;
 	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2010[i % 8]&0xff);} break;
-
-	}
+	}break;
 case 0x30:
     switch (keynum){
 	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3002[i % 8]&0xff);} break;
@@ -442,15 +439,16 @@ case 0x30:
 	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k300c[i % 8]&0xff);} break;
 	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k300e[i % 8]&0xff);} break;
 	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3010[i % 8]&0xff);} break;
-
-	}
+	}break;
 }
     for (int i=0;i<=1;i++){zplainkey[8+i] ^= dtdt[i];}
 }
 
 
 void generate_ecm(uint8_t *buffernew,uint8_t *chid,uint8_t provider,uint8_t keynum,uint8_t *cw0 ,uint8_t *cw1){
-    uint8_t zpk[10],sig[8];
+    uint8_t zpk[10];
+    uint8_t sig[8];
+
     buffernew[0x02] = 0x23;
     buffernew[0x09] = 0x40;
     buffernew[0x08]=0x1d;buffernew[0x0a]=0x02;buffernew[0x0d]=0x78;buffernew[0x0e]=0x12;
@@ -464,6 +462,12 @@ void generate_ecm(uint8_t *buffernew,uint8_t *chid,uint8_t provider,uint8_t keyn
     irdeto_datum(datum);
 	buffernew[0x0b]=datum[0];buffernew[0x0c]=datum[1];
     restkey(zpk,buffernew[0x05],buffernew[0x06],datum);
+
+    fprintf(stderr,"Provider: %02X \n",provider);
+    fprintf(stderr,"Restore key: ");
+    for(int i = 0;i < 10;i++)fprintf(stderr,"%02X ",zpk[i]);
+    fprintf(stderr,"\n");
+
 	sign(sig,buffernew,zpk,2);
 	restkey(zpk,buffernew[0x05],buffernew[0x06],datum);
 	encrypt(buffernew,zpk,127,8,0x11);
