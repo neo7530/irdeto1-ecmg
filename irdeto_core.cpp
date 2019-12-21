@@ -532,6 +532,9 @@ case(0x1a):
     break;
 }
 
+buffer[0] = 0x82;
+buffer[1] = 0x70;
+
 //type 0
 switch(type){
     case(0x00):
