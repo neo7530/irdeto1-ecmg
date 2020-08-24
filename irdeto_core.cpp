@@ -46,6 +46,12 @@ char k0002[8],k0004[8],k0006[8],k0008[8],k000a[8],k000c[8],k000e[8],k0010[8];
 char k1002[8],k1004[8],k1006[8],k1008[8],k100a[8],k100c[8],k100e[8],k1010[8];
 char k2002[8],k2004[8],k2006[8],k2008[8],k200a[8],k200c[8],k200e[8],k2010[8];
 char k3002[8],k3004[8],k3006[8],k3008[8],k300a[8],k300c[8],k300e[8],k3010[8];
+
+uint8_t p00[8][8] = {0};
+uint8_t p10[8][8] = {0};
+uint8_t p20[8][8] = {0};
+uint8_t p30[8][8] = {0};
+
 //char hmk[10],hexserial[3],provid[3];
 uint8_t datum[2];
 
@@ -192,7 +198,6 @@ XRotateLeft8Byte(localkey);
 }
 }
 
-
 void camcrypt(uint8_t *camkey, uint8_t *key)
 {
 uint8_t localkey[8], tmp1, tmp2;
@@ -232,214 +237,110 @@ XRotateRight8Byte(localkey);
 }
 }
 
+void printkeys(){
+	
+	printf("Provider 00:\n");
+	
+	for(int j = 0; j < 8;j++){
+		for(int i = 0;i < 8;i++){printf("%02X ",p00[j][i]&0xff);}
+		printf("\n");
+	}
+	
+	printf("\nProvider 10:\n");
+	printf("\n");
+	
+	for(int j = 0; j < 8;j++){
+		for(int i = 0;i < 8;i++){printf("%02X ",p10[j][i]&0xff);}
+		printf("\n");
+	}
 
+	printf("\nProvider 20:\n");
+	printf("\n");
+	
+	for(int j = 0; j < 8;j++){
+		for(int i = 0;i < 8;i++){printf("%02X ",p20[j][i]&0xff);}
+		printf("\n");
+	}
 
-
-
-void printkeys() {
-    printf("Provider 00:\n");
-    printf("K02: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k0002[i]&0xff);}
-    printf("\n");
-    printf("K04: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k0004[i]&0xff);}
-    printf("\n");
-    printf("K06: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k0006[i]&0xff);}
-    printf("\n");
-    printf("K08: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k0008[i]&0xff);}
-    printf("\n");
-    printf("K0a: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k000a[i]&0xff);}
-    printf("\n");
-    printf("K0c: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k000c[i]&0xff);}
-    printf("\n");
-    printf("K0e: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k000e[i]&0xff);}
-    printf("\n");
-    printf("K10: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k0010[i]&0xff);}
-    printf("\n");
-    printf("Provider 10:\n");
-    printf("K02: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k1002[i]&0xff);}
-    printf("\n");
-    printf("K04: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k1004[i]&0xff);}
-    printf("\n");
-    printf("K06: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k1006[i]&0xff);}
-    printf("\n");
-    printf("K08: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k1008[i]&0xff);}
-    printf("\n");
-    printf("K0a: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k100a[i]&0xff);}
-    printf("\n");
-    printf("K0c: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k100c[i]&0xff);}
-    printf("\n");
-    printf("K0e: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k100e[i]&0xff);}
-    printf("\n");
-    printf("K10: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k1010[i]&0xff);}
-    printf("\n");
-    printf("Provider 20:\n");
-    printf("K02: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k2002[i]&0xff);}
-    printf("\n");
-    printf("K04: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k2004[i]&0xff);}
-    printf("\n");
-    printf("K06: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k2006[i]&0xff);}
-    printf("\n");
-    printf("K08: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k2008[i]&0xff);}
-    printf("\n");
-    printf("K0a: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k200a[i]&0xff);}
-    printf("\n");
-    printf("K0c: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k200c[i]&0xff);}
-    printf("\n");
-    printf("K0e: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k200e[i]&0xff);}
-    printf("\n");
-    printf("K10: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k2010[i]&0xff);}
-    printf("\n");
-    printf("Provider 30:\n");
-    printf("K02: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k3002[i]&0xff);}
-    printf("\n");
-    printf("K04: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k3004[i]&0xff);}
-    printf("\n");
-    printf("K06: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k3006[i]&0xff);}
-    printf("\n");
-    printf("K08: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k3008[i]&0xff);}
-    printf("\n");
-    printf("K0a: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k300a[i]&0xff);}
-    printf("\n");
-    printf("K0c: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k300c[i]&0xff);}
-    printf("\n");
-    printf("K0e: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k300e[i]&0xff);}
-    printf("\n");
-    printf("K10: ");
-    for(int i = 0;i < 8;i++){printf("%02X ",k3010[i]&0xff);}
-    printf("\n");
+	printf("\nProvider 30:\n");
+	printf("\n");
+	
+	for(int j = 0; j < 8;j++){
+		for(int i = 0;i < 8;i++){printf("%02X ",p30[j][i]&0xff);}
+		printf("\n");
+	}	
+	
+	
 }
-
 
 void readkeys(){
-  ifstream file("keys.bin", ios::in|ios::binary|ios::ate);
+	FILE *fp = fopen("keys.txt","rt");
+	bool fileopen = 0;
+	char tkey[100] = {0};
+	int idx = 0;
+	
+	if (fp == NULL) {
+       	fprintf(stderr, "Can't read keys.txt.\n\n");
+       	//return 0;
+    } else {
+		fprintf(stderr, "keys.txt opened\n\n");
+		fileopen = 1;
+	}
+	
+	if(fileopen){
+		for(int j = 0; j<8; j++){
+			fgets(tkey,400,fp);
+			for(idx = 0;idx < 8;idx++){
+				sscanf(&tkey[idx*3],"%02x ",&p00[j][idx]);
+				//fclose(fp);
+			}
+			if(feof(fp))fclose(fp);
+		}
 
-//std::ifstream file = std::ifstream("test.txt", ios::in|ios::binary|ios::ate);
+		for(int j = 0; j<8; j++){
+			fgets(tkey,400,fp);
+			for(idx = 0;idx < 8;idx++){
+				sscanf(&tkey[idx*3],"%02x ",&p10[j][idx]);
+				//fclose(fp);
+			}
+			if(feof(fp))fclose(fp);
+		}
+		
+		for(int j = 0; j<8; j++){
+			fgets(tkey,400,fp);
+			for(idx = 0;idx < 8;idx++){
+				sscanf(&tkey[idx*3],"%02x ",&p20[j][idx]);
+				//fclose(fp);
+			}
+			if(feof(fp))fclose(fp);
+		}
 
-  if (file.is_open())
-  {
-    file.seekg (0, ios::beg);
-    file.read (k0002, 8);
-    file.read (k0004, 8);
-    file.read (k0006, 8);
-    file.read (k0008, 8);
-    file.read (k000a, 8);
-    file.read (k000c, 8);
-    file.read (k000e, 8);
-    file.read (k0010, 8);
+		for(int j = 0; j<8; j++){
+			fgets(tkey,400,fp);
+			for(idx = 0;idx < 8;idx++){
+				sscanf(&tkey[idx*3],"%02x ",&p30[j][idx]);
+				//fclose(fp);
+			}
+			if(feof(fp))fclose(fp);
+		}
 
-    file.read (k1002, 8);
-    file.read (k1004, 8);
-    file.read (k1006, 8);
-    file.read (k1008, 8);
-    file.read (k100a, 8);
-    file.read (k100c, 8);
-    file.read (k100e, 8);
-    file.read (k1010, 8);
-
-    file.read (k2002, 8);
-    file.read (k2004, 8);
-    file.read (k2006, 8);
-    file.read (k2008, 8);
-    file.read (k200a, 8);
-    file.read (k200c, 8);
-    file.read (k200e, 8);
-    file.read (k2010, 8);
-
-    file.read (k3002, 8);
-    file.read (k3004, 8);
-    file.read (k3006, 8);
-    file.read (k3008, 8);
-    file.read (k300a, 8);
-    file.read (k300c, 8);
-    file.read (k300e, 8);
-    file.read (k3010, 8);
-
-    file.close();
-    printf("Irdeto-Keys loaded... \n");
-    //delete[] memblock;
-  }
-  else printf("ERROR: keys.bin not found! \n");
-    printkeys();
+	}
+	
+	fclose(fp);
+	printkeys();
 }
-
 
 void restkey(uint8_t *zplainkey,uint8_t provider,uint8_t keynum,uint8_t *dtdt){
 
 switch(provider) {
 case 0x00:
-    switch (keynum){
-	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0002[i % 8]&0xff);} break;
-	case 0x04: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0004[i % 8]&0xff);} break;
-	case 0x06: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0006[i % 8]&0xff);} break;
-	case 0x08: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0008[i % 8]&0xff);} break;
-	case 0x0a: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k000a[i % 8]&0xff);} break;
-	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k000c[i % 8]&0xff);} break;
-	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k000e[i % 8]&0xff);} break;
-	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k0010[i % 8]&0xff);} break;
-    }break;
+	for (int i =0 ; i <=9;i++){ zplainkey[i] = (p00[(keynum/2)-1][i % 8]&0xff);} break;
 case 0x10:
-    switch (keynum){
-	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1002[i % 8]&0xff);} break;
-	case 0x04: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1004[i % 8]&0xff);} break;
-	case 0x06: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1006[i % 8]&0xff);} break;
-	case 0x08: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1008[i % 8]&0xff);} break;
-	case 0x0a: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k100a[i % 8]&0xff);} break;
-	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k100c[i % 8]&0xff);} break;
-	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k100e[i % 8]&0xff);} break;
-	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k1010[i % 8]&0xff);} break;
-	}break;
+	for (int i =0 ; i <=9;i++){ zplainkey[i] = (p10[(keynum/2)-1][i % 8]&0xff);} break;
 case 0x20:
-    switch (keynum){
-	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2002[i % 8]&0xff);} break;
-	case 0x04: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2004[i % 8]&0xff);} break;
-	case 0x06: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2006[i % 8]&0xff);} break;
-	case 0x08: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2008[i % 8]&0xff);} break;
-	case 0x0a: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k200a[i % 8]&0xff);} break;
-	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k200c[i % 8]&0xff);} break;
-	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k200e[i % 8]&0xff);} break;
-	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k2010[i % 8]&0xff);} break;
-	}break;
+	for (int i =0 ; i <=9;i++){ zplainkey[i] = (p20[(keynum/2)-1][i % 8]&0xff);} break;
 case 0x30:
-    switch (keynum){
-	case 0x02: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3002[i % 8]&0xff);} break;
-	case 0x04: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3004[i % 8]&0xff);} break;
-	case 0x06: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3006[i % 8]&0xff);} break;
-	case 0x08: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3008[i % 8]&0xff);} break;
-	case 0x0a: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k300a[i % 8]&0xff);} break;
-	case 0x0c: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k300c[i % 8]&0xff);} break;
-	case 0x0e: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k300e[i % 8]&0xff);} break;
-	case 0x10: for (int i =0 ; i <=9;i++){ zplainkey[i] = (k3010[i % 8]&0xff);} break;
-	}break;
+	for (int i =0 ; i <=9;i++){ zplainkey[i] = (p30[(keynum/2)-1][i % 8]&0xff);} break;
 }
     for (int i=0;i<=1;i++){zplainkey[8+i] ^= dtdt[i];}
 }
