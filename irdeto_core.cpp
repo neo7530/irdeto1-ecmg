@@ -42,11 +42,6 @@ static uint8_t ttt[24] = {
 0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,3,6,1,4,7,2,5
 };
 
-char k0002[8],k0004[8],k0006[8],k0008[8],k000a[8],k000c[8],k000e[8],k0010[8];
-char k1002[8],k1004[8],k1006[8],k1008[8],k100a[8],k100c[8],k100e[8],k1010[8];
-char k2002[8],k2004[8],k2006[8],k2008[8],k200a[8],k200c[8],k200e[8],k2010[8];
-char k3002[8],k3004[8],k3006[8],k3008[8],k300a[8],k300c[8],k300e[8],k3010[8];
-
 uint8_t p00[8][8] = {0};
 uint8_t p10[8][8] = {0};
 uint8_t p20[8][8] = {0};
@@ -289,7 +284,7 @@ void readkeys(){
 	
 	if(fileopen){
 		for(int j = 0; j<8; j++){
-			fgets(tkey,400,fp);
+			fgets(tkey,99,fp);
 			for(idx = 0;idx < 8;idx++){
 				sscanf(&tkey[idx*3],"%02x ",&p00[j][idx]);
 				//fclose(fp);
@@ -298,7 +293,7 @@ void readkeys(){
 		}
 
 		for(int j = 0; j<8; j++){
-			fgets(tkey,400,fp);
+			fgets(tkey,99,fp);
 			for(idx = 0;idx < 8;idx++){
 				sscanf(&tkey[idx*3],"%02x ",&p10[j][idx]);
 				//fclose(fp);
@@ -307,7 +302,7 @@ void readkeys(){
 		}
 		
 		for(int j = 0; j<8; j++){
-			fgets(tkey,400,fp);
+			fgets(tkey,99,fp);
 			for(idx = 0;idx < 8;idx++){
 				sscanf(&tkey[idx*3],"%02x ",&p20[j][idx]);
 				//fclose(fp);
@@ -316,7 +311,7 @@ void readkeys(){
 		}
 
 		for(int j = 0; j<8; j++){
-			fgets(tkey,400,fp);
+			fgets(tkey,99,fp);
 			for(idx = 0;idx < 8;idx++){
 				sscanf(&tkey[idx*3],"%02x ",&p30[j][idx]);
 				//fclose(fp);
@@ -383,54 +378,14 @@ uint8_t hexmaster[10];
 uint8_t pk[8];
 
 switch(provider){
-case(0x02):
-    switch(keyident){
-        case(0x02): memcpy(&pk[0],&k0002[0],8); break;
-        case(0x04): memcpy(&pk[0],&k0004[0],8); break;
-        case(0x06): memcpy(&pk[0],&k0006[0],8); break;
-        case(0x08): memcpy(&pk[0],&k0008[0],8); break;
-        case(0x0a): memcpy(&pk[0],&k000a[0],8); break;
-        case(0x0c): memcpy(&pk[0],&k000c[0],8); break;
-        case(0x0e): memcpy(&pk[0],&k000e[0],8); break;
-        case(0x10): memcpy(&pk[0],&k0010[0],8); break;
-    }
-    break;
-case(0x0a):
-    switch(keyident){
-        case(0x02): memcpy(&pk[0],&k1002[0],8); break;
-        case(0x04): memcpy(&pk[0],&k1004[0],8); break;
-        case(0x06): memcpy(&pk[0],&k1006[0],8); break;
-        case(0x08): memcpy(&pk[0],&k1008[0],8); break;
-        case(0x0a): memcpy(&pk[0],&k100a[0],8); break;
-        case(0x0c): memcpy(&pk[0],&k100c[0],8); break;
-        case(0x0e): memcpy(&pk[0],&k100e[0],8); break;
-        case(0x10): memcpy(&pk[0],&k1010[0],8); break;
-    }
-    break;
-case(0x12):
-    switch(keyident){
-        case(0x02): memcpy(&pk[0],&k2002[0],8); break;
-        case(0x04): memcpy(&pk[0],&k2004[0],8); break;
-        case(0x06): memcpy(&pk[0],&k2006[0],8); break;
-        case(0x08): memcpy(&pk[0],&k2008[0],8); break;
-        case(0x0a): memcpy(&pk[0],&k200a[0],8); break;
-        case(0x0c): memcpy(&pk[0],&k200c[0],8); break;
-        case(0x0e): memcpy(&pk[0],&k200e[0],8); break;
-        case(0x10): memcpy(&pk[0],&k2010[0],8); break;
-    }
-    break;
-case(0x1a):
-    switch(keyident){
-        case(0x02): memcpy(&pk[0],&k3002[0],8); break;
-        case(0x04): memcpy(&pk[0],&k3004[0],8); break;
-        case(0x06): memcpy(&pk[0],&k3006[0],8); break;
-        case(0x08): memcpy(&pk[0],&k3008[0],8); break;
-        case(0x0a): memcpy(&pk[0],&k300a[0],8); break;
-        case(0x0c): memcpy(&pk[0],&k300c[0],8); break;
-        case(0x0e): memcpy(&pk[0],&k300e[0],8); break;
-        case(0x10): memcpy(&pk[0],&k3010[0],8); break;
-    }
-    break;
+	case(0x02):
+		memcpy(&pk[0],&p00[(keyident/2)-1][0],8); break;
+	case(0x0a):
+		memcpy(&pk[0],&p10[(keyident/2)-1][0],8); break;
+	case(0x12):
+		memcpy(&pk[0],&p20[(keyident/2)-1][0],8); break;
+	case(0x1a):
+		memcpy(&pk[0],&p30[(keyident/2)-1][0],8); break;
 }
 
 buffer[0] = 0x82;
